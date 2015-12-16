@@ -4,13 +4,20 @@
   <!-- Email: jasonhbennett@outlook.com -->
   <head>
     <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="js/ttt.js"></script>
   </head>
   <body id="mainView">
     <canvas id="tic"></canvas>
     <script src="js/main.js"></script>
-    <script src="js/bootstrap.js></script>
     <script>
+      var mainView = document.getElementById("mainView");
+      var canvas = document.getElementById("tic");
+      var context = canvas.getContext("2d");
 
+      var ttt = new TicTacToe(mainView, canvas, context);
+
+      // Debug output
+      ttt.getInfo();
     </script>
   </body>
 </html>
