@@ -1,6 +1,11 @@
 function TicTacToe(mainView, canvas, context)
 {
   /**
+   * Stateful var that determines if it's the players turn or not.
+   */
+  var playerTurn = true;
+
+  /**
    * Width (in pixels) of the main viewport.
    */
   var width = mainView.offsetWidth;
@@ -130,7 +135,7 @@ function TicTacToe(mainView, canvas, context)
 
     // Check if the spot selected has already been selected.
     if (!isTaken(xCell, yCell)) {
-      
+        tickLocation(xCell, yCell);
     }
   }
 
@@ -153,11 +158,16 @@ function TicTacToe(mainView, canvas, context)
     }
   }
 
-  function tickLocation(xCell, yCell, player)
+  function tickLocation(xCell, yCell)
   {
     var pos = findArrayPos(xCell, yCell);
 
-    tttMap[pos].owner = player;
+    if (playerTurn && tttMap[pos].owner === null) {
+      tttMap[pos].owner = 0;
+      makeX(xCell, yCell);
+      //playerTurn = false;
+      aiTurn(xCell, yCell);
+    }
   }
 
   function findArrayPos(xCell, yCell)
@@ -169,6 +179,53 @@ function TicTacToe(mainView, canvas, context)
       }
     }
     return -1;
+  }
+
+  function makeX(xCell, yCell)
+  {
+    context.moveTo((xCell*xLineOffset)+Math.floor(xLineOffset*0.1), (yCell*yLineOffset)+Math.floor(yLineOffset*0.1));
+    context.lineTo((xCell*xLineOffset)+Math.floor(xLineOffset*0.9), (yCell*yLineOffset)+Math.floor(yLineOffset*0.9));
+    context.moveTo((xCell*xLineOffset)+Math.floor(xLineOffset*0.1), (yCell*yLineOffset)+Math.floor(yLineOffset*0.9));
+    context.lineTo((xCell*xLineOffset)+Math.floor(xLineOffset*0.9), (yCell*yLineOffset)+Math.floor(yLineOffset*0.1));
+    context.stroke();
+  }
+
+  function makeO(xCell, yCell)
+  {
+    var radius;
+    var x = (xCell*xLineOffset)+(xLineOffset*0.5);
+    var y = (yCell*yLineOffset)+(yLineOffset*0.5);
+
+    // Determine radius based on the shorter axis.
+    if (xLineOffset > yLineOffset) {
+      radius = (yLineOffset/2)*0.8;
+    } else {
+      radius = (xLineOffset/2)*0.8;
+    }
+
+    context.moveTo(x+radius, y);
+    context.arc(x, y, radius, 0, 2*Math.PI);
+    context.stroke();
+  }
+
+  /**
+   * Going to kep it interesting and make the ai not super intelligent.
+   */
+  function aiTurn(xCell, yCell)
+  {
+    // Check if it's a edge cell.
+    if (xCell !== 1 || yCell !== 1) {
+      if (xCell !== 1) {
+        // on left or right.
+        
+      } else if (yCell !== 1) {
+        // on top or bottom.
+
+      }
+    } else {
+      // middle chosen.
+
+    }
   }
 
   /**
