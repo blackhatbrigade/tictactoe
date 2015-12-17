@@ -228,6 +228,46 @@ function TicTacToe(mainView, canvas, context)
     }
   }
 
+  function isWon(curPlayer)
+  {
+    var won = true;
+    // Verticals
+    for (var i = 0; i < cellWidth; i++)
+    {
+      for (var j = 0; j < cellHeight; j+=cellWidth) {
+        if (tttMap[i+j].owner !== curPlayer) {
+          won = false;
+        }
+      }
+    }
+
+    // Horizontals
+    for (var i = 0; i < cellHeight; i+=cellWidth)
+    {
+      for (var j = 0; j < cellHeight; j++) {
+        if (tttMap[i+j].owner !== curPlayer) {
+          won = false;
+        }
+      }
+    }
+
+    // Diagonals
+    // Yeah, sorry for abusing the poor for statement.
+    for (var i = 0, j = 0; (i < cellWidth) && (j < cellHeight); i++, j++) {
+      if (tttMap[i+(j*cellWidth)].owner !== curPlayer) {
+        won = false;
+      }
+    }
+
+    for (var i = cellWidth, j = (; (i < cellWidth) && (j < cellHeight); i++, j++) {
+      if (tttMap[i+(j*cellWidth)].owner !== curPlayer) {
+        won = false;
+      }
+    }
+
+    return won;
+  }
+
   /**
    * Debug function.
    */
