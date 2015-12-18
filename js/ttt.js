@@ -162,11 +162,23 @@ function TicTacToe(mainView, canvas, context)
   {
     var pos = findArrayPos(xCell, yCell);
 
-    if (playerTurn && tttMap[pos].owner === null) {
-      tttMap[pos].owner = 0;
-      makeX(xCell, yCell);
-      //playerTurn = false;
-      aiTurn(xCell, yCell);
+    if (tttMap[pos].owner === null) {
+      tttMap[pos].owner = playerTurn;
+      if (playerTurn === true) {
+        makeX(xCell, yCell);
+      } else {
+        makeO(xCell, yCell);
+      }
+
+      if (isWon(playerTurn)) {
+        console.log('YOU WON!');
+      }
+
+      if (playerTurn === true) {
+        playerTurn = false;
+      } else {
+        playerTurn = true;
+      }
     }
   }
 
@@ -232,6 +244,7 @@ function TicTacToe(mainView, canvas, context)
   {
     var won = true;
     // Verticals
+    won = true;
     for (var i = 0; i < cellWidth; i++)
     {
       for (var j = 0; j < cellHeight; j+=cellWidth) {
@@ -240,8 +253,12 @@ function TicTacToe(mainView, canvas, context)
         }
       }
     }
+    if (won) {
+      return true;
+    }
 
     // Horizontals
+    won = true;
     for (var i = 0; i < cellHeight; i+=cellWidth)
     {
       for (var j = 0; j < cellHeight; j++) {
@@ -250,22 +267,43 @@ function TicTacToe(mainView, canvas, context)
         }
       }
     }
+    if (won) {
+      return true;
+    }
 
     // Diagonals
     // Yeah, sorry for abusing the poor for statement.
+    won = true;
     for (var i = 0, j = 0; (i < cellWidth) && (j < cellHeight); i++, j++) {
       if (tttMap[i+(j*cellWidth)].owner !== curPlayer) {
         won = false;
       }
     }
+    if (won) {
+      return true;
+    }
 
-    for (var i = cellWidth, j = (; (i < cellWidth) && (j < cellHeight); i++, j++) {
-      if (tttMap[i+(j*cellWidth)].owner !== curPlayer) {
+    won = true;
+    for (var i = (cellWidth-1); i >= 0; i--) {
+      if (tttMap[i+(i*cellWidth)].owner !== curPlayer) {
         won = false;
       }
     }
+    if (won) {
+      return true;
+    }
 
-    return won;
+    won = true;
+    for (var i = 0; i < cellWidth; i++) {
+      if (tttMap[i+((cellWidth-(i+1))*cellWidth)].owner !== curPlayer) {
+        won = false;
+      }
+    }
+    if (won) {
+      return true;
+    }
+
+    return false;
   }
 
   /**
