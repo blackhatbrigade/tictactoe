@@ -7,17 +7,20 @@
     <script src="js/ttt.js"></script>
   </head>
   <body id="mainView">
+    <div id="gameStatus">
+      <p id="status"></p>
+    </div>
+    <div id="players">
+      <p id="one" class="turn">Player 1</p>
+      <p id="two">Player 2</p>
+    </div>
     <canvas id="tic"></canvas>
-    <script src="js/main.js"></script>
     <script>
       var mainView = document.getElementById("mainView");
       var canvas = document.getElementById("tic");
       var context = canvas.getContext("2d");
 
       var ttt = new TicTacToe(mainView, canvas, context);
-
-      // Debug output
-      ttt.getInfo();
     </script>
   </body>
 </html>

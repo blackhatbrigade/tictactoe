@@ -6,6 +6,11 @@ function TicTacToe(mainView, canvas, context)
   var playerTurn = true;
 
   /**
+   * Keeps track of if the game is still going or it's been won.
+   */
+  var gameStatus = true;
+
+  /**
    * Width (in pixels) of the main viewport.
    */
   var width = mainView.offsetWidth;
@@ -158,11 +163,26 @@ function TicTacToe(mainView, canvas, context)
     }
   }
 
+  /**
+   * Handles the ticking of a location event.
+   * 
+   * @param xCell $xCell The x-axis location of the cell.
+   * @param yCell $yCell The y-axis location of the cell.
+   *
+   * @return void
+   */
   function tickLocation(xCell, yCell)
   {
     var pos = findArrayPos(xCell, yCell);
+    var playerNum;
 
-    if (tttMap[pos].owner === null) {
+    if (playerTurn === true) {
+      playerNum = 1;
+    } else {
+      playerNum = 2;
+    }
+
+    if (tttMap[pos].owner === null && gameStatus === true) {
       tttMap[pos].owner = playerTurn;
       if (playerTurn === true) {
         makeX(xCell, yCell);
@@ -171,12 +191,18 @@ function TicTacToe(mainView, canvas, context)
       }
 
       if (isWon(playerTurn)) {
-        console.log('YOU WON!');
+        gameStatus = false;
+        
+        document.getElementById('status').innerHTML = "Player " + playerNum + " won!";
       }
 
       if (playerTurn === true) {
         playerTurn = false;
+        document.getElementById("one").className = "";
+        document.getElementById("two").className = "turn";
       } else {
+        document.getElementById("one").className = "turn";
+        document.getElementById("two").className = "";
         playerTurn = true;
       }
     }
@@ -244,31 +270,31 @@ function TicTacToe(mainView, canvas, context)
   {
     var won = true;
     // Verticals
-    won = true;
-    for (var i = 0; i < cellWidth; i++)
+    for (var i = 0; i < (cellWidth*cellWidth); i+=cellWidth)
     {
-      for (var j = 0; j < cellHeight; j+=cellWidth) {
+      won = true;
+      for (var j = 0; j < cellWidth; j++) {
         if (tttMap[i+j].owner !== curPlayer) {
           won = false;
         }
       }
-    }
-    if (won) {
-      return true;
+      if (won) {
+        return true;
+      }
     }
 
     // Horizontals
-    won = true;
-    for (var i = 0; i < cellHeight; i+=cellWidth)
+    for (var i = 0; i < cellHeight; i++)
     {
-      for (var j = 0; j < cellHeight; j++) {
+      won = true;
+      for (var j = 0; j < (cellHeight*cellWidth); j+=cellWidth) {
         if (tttMap[i+j].owner !== curPlayer) {
           won = false;
         }
       }
-    }
-    if (won) {
-      return true;
+      if (won) {
+        return true;
+      }
     }
 
     // Diagonals

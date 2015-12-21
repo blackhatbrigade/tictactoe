@@ -7,3 +7,14 @@ body{
   height: 90%;
   margin: 4%;
 }
+div p{
+  float: left;
+  width: 50%;
+  text-align: center;
+}
+#status{
+  width: 100%;
+}
+.turn{
+  text-decoration: underline;
+}
